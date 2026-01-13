@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serene Plast | موادی ئاو و ئاوەڕۆ و بیناسازی</title>
+  <meta name="description" content="Serene Plast — Water • Sanitary • Construction Supplies" />
+
+  <style>
+    :root{
+      --bg0:#070b14; --bg1:#0c1426;
+      --glass: rgba(255,255,255,.08);
+      --glass2: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --r: 22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Tahoma, Arial, "Noto Sans Arabic", "Noto Kufi Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 620px at 85% 12%, rgba(96,165,250,.16), transparent 60%),
+        radial-gradient(900px 620px at 15% 18%, rgba(45,212,191,.14), transparent 60%),
+        radial-gradient(900px 620px at 55% 110%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+    .grid{
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: radial-gradient(closest-side at 55% 35%, rgba(0,0,0,.95), transparent 72%);
+      opacity:.22; pointer-events:none;
+      animation: drift 18s ease-in-out infinite alternate;
+      transform: translateZ(0);
+    }
+    @keyframes drift{ from{transform:translate3d(0,0,0) scale(1)} to{transform:translate3d(14px,-10px,0) scale(1.02)} }
+    .wrap{ max-width:980px; margin:0 auto; padding:34px 16px 24px; position:relative; }
+    .topbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+    .brand{ display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 360px; }
+    .brandLogo{ width:48px; height:48px; border-radius:16px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.07); overflow:hidden; flex:0 0 auto; display:grid; place-items:center; }
+    .brandLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .brand h1{ margin:0; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brand p{ margin:4px 0 0; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .controls{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
+    .select,.pill{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius:999px;
+      padding:10px 12px;
+      font-size:12px;
+      outline:none; cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px;
+      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .pill:hover,.select:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18); }
+    .select option{ color:#111; }
+
+    .layout{ display:grid; grid-template-columns: 1.15fr .85fr; gap:14px; }
+    @media (max-width:860px){ .layout{ grid-template-columns:1fr; } }
+
+    .card{
+      border-radius: var(--r);
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .cover{ position:relative; height:190px; border-bottom:1px solid rgba(255,255,255,.10); overflow:hidden; }
+    .cover img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.02); transform:scale(1.02); }
+    .coverOverlay{ position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.12)); }
+    .coverText{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; padding:16px 18px; }
+    .coverText .big{ margin:0; font-size:20px; font-weight:850; text-shadow: 0 10px 30px rgba(0,0,0,.45); }
+    .coverText .small{ margin:0; font-size:12.5px; color: rgba(255,255,255,.80); text-shadow: 0 10px 30px rgba(0,0,0,.45); line-height:1.5; }
+
+    .cardHeader{ padding:14px 18px 10px; }
+    .title{ margin:0; font-size:18px; line-height:1.25; }
+    .sub{ margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.65; }
+
+    .linksWrap{ padding:12px; }
+    .linksGrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:6px; }
+    @media (max-width:520px){ .linksGrid{ grid-template-columns:1fr; } }
+
+    .linkBtn{
+      width:100%;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:14px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      color: var(--text);
+      text-decoration:none;
+      transition: transform .14s ease, border-color .2s ease, background .25s ease;
+      overflow:hidden;
+    }
+    .linkBtn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); }
+    .left{ display:flex; align-items:center; gap:12px; min-width:0; }
+
+    .icon{
+      width:44px; height:44px;
+      border-radius:14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+      overflow:hidden;
+      flex:0 0 auto;
+      display:block;
+    }
+    .icon img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .meta{ min-width:0; display:flex; flex-direction:column; gap:3px; }
+    .meta .name{ font-size:14px; font-weight:850; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .meta .hint{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; direction:ltr; text-align:right; }
+    .arrow{ opacity:.85; flex:0 0 auto; transition: transform .2s ease, opacity .2s ease; }
+    .linkBtn:hover .arrow{ transform: translateX(-3px); opacity:1; }
+
+    .side{ display:flex; flex-direction:column; gap:12px; }
+    .mini{ padding:16px; }
+    .mini h3{ margin:0 0 8px; font-size:14px; }
+    .mini p{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.75; }
+
+    .actionsRow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+    @media (max-width:420px){ .actionsRow{ grid-template-columns:1fr; } }
+    .btn{
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 16px;
+      cursor:pointer;
+      font-size: 12.5px;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+      user-select:none; width:100%;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); }
+
+    .toast{
+      position: fixed; left:16px; bottom:16px; z-index:10;
+      padding:12px 14px; border-radius:14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      font-size:13px;
+      opacity:0; transform: translateY(10px);
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{ opacity:1; transform: translateY(0); }
+
+    footer{ margin-top:16px; text-align:center; color: rgba(255,255,255,.55); font-size:12px; }
+
+    body.light{
+      --bg0:#f6f8ff; --bg1:#eef2ff;
+      --text: rgba(12,18,32,.92);
+      --muted: rgba(12,18,32,.62);
+      --stroke: rgba(12,18,32,.12);
+      background:
+        radial-gradient(900px 620px at 85% 12%, rgba(96,165,250,.18), transparent 60%),
+        radial-gradient(900px 620px at 15% 18%, rgba(45,212,191,.16), transparent 60%),
+        radial-gradient(900px 620px at 55% 110%, rgba(167,139,250,.14), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+    body.light .toast{ background: rgba(255,255,255,.78); color: rgba(12,18,32,.92); }
+
+    @media (prefers-reduced-motion: reduce){
+      .grid{ animation:none !important; }
+      .pill:hover,.select:hover,.linkBtn:hover,.btn:hover{ transform:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brandLogo" aria-hidden="true">
+          <img id="brandLogoImg" src="7.jpg" alt="Serene Plast Logo">
+        </div>
+        <div style="min-width:0">
+          <h1 id="brandName">Serene Plast</h1>
+          <p id="brandTag">Water • Sanitary • Construction Supplies</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <select class="select" id="langSelect" title="Language">
+          <option value="ckb">کوردی</option>
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+
+        <button class="pill" id="themeBtn" type="button" title="Dark / Light">
+          <span id="themeLabel">تاریک</span>
+        </button>
+      </div>
+    </div>
+
+    <section class="layout">
+      <div class="card">
+        <div class="cover">
+          <img id="coverImg" src="7.jpg" alt="Serene Plast Cover">
+          <div class="coverOverlay" aria-hidden="true"></div>
+          <div class="coverText">
+            <p class="big" id="coverTitle">Serene Plast</p>
+            <p class="small" id="coverSubtitle">موادی ئاو • ئاوەڕۆ • بیناسازی</p>
+          </div>
+        </div>
+
+        <div class="cardHeader">
+          <h2 class="title" id="headlineTitle"></h2>
+          <p class="sub" id="headlineSub"></p>
+        </div>
+
+        <div class="linksWrap">
+          <div class="linksGrid" id="linksGrid"></div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card mini">
+          <h3 id="contactTitle"></h3>
+          <p id="contactText"></p>
+
+          <div class="actionsRow">
+            <button class="btn" id="copyPhoneBtn" type="button"></button>
+            <button class="btn" id="openLocationBtn" type="button"></button>
+          </div>
+        </div>
+
+        <div class="card mini">
+          <h3 id="hoursTitle"></h3>
+          <p id="hoursText"></p>
+        </div>
+      </aside>
+    </section>
+
+    <footer id="footerText">© <span id="year"></span> — Serene Plast</footer>
+  </main>
+
+  <div class="toast" id="toast">Done</div>
+
+  <script>
+    // ============== CONFIG (تەنها ئەمانە بگۆڕە) ==============
+    const PROFILE = {
+      phone: "+9647501741718",
+
+      // ✅ یەکسان: ئەمە هەمان لوکەیشنە بێت کە لە لینکەکانیشە
+      locationUrl: "https://maps.app.goo.gl/Q8JhHHMCEdmqiosa7",
+
+      // ✅ دڵنیابە ئەمانە بەڕاستی هەن لە شوێنی فایلەکە
+      images: {
+        logo:  "assets/logo.png",     // یان "7.jpg"
+        cover: "assets/cover.jpg",    // یان "7.jpg"
+        icons: {
+          facebook:  "1.jpg",
+          instagram: "2.webp",
+          tiktok:    "3.webp",
+          whatsapp:  "4.webp",
+          location:  "5.webp",
+        }
+      },
+
+      links: [
+        { key:"facebook",  name:{ckb:"فەیسبوک", en:"Facebook", ar:"فيسبوك"},    url:"https://www.facebook.com/share/17umaNMTzt/", hint:"facebook.com/yourpage" },
+        { key:"instagram", name:{ckb:"ئینستا",   en:"Instagram", ar:"إنستغرام"}, url:"https://www.instagram.com/serene.plast?igsh=MWQwaWx0aGJ0ajdiZA==", hint:"instagram.com/yourpage" },
+        { key:"tiktok",    name:{ckb:"تیک تۆک",  en:"TikTok", ar:"تيك توك"},      url:"https://www.tiktok.com/@serene_plast?_r=1&_t=ZS-932fbhlmt5V", hint:"tiktok.com/@yourpage" },
+        { key:"whatsapp",  name:{ckb:"واتسئەپ",  en:"WhatsApp", ar:"واتساب"},     url:"https://wa.me/9647501741718", hint:"wa.me/9647..." },
+        { key:"location",  name:{ckb:"لۆکەیشن",  en:"Location", ar:"الموقع"},     url:"https://maps.app.goo.gl/Q8JhHHMCEdmqiosa7", hint:"Google Maps" },
+      ],
+
+      brand: {
+        ckb: { name:"Serene Plast", tag:"موادی ئاو • ئاوەڕۆ • بیناسازی" },
+        en:  { name:"Serene Plast", tag:"Water • Sanitary • Construction Supplies" },
+        ar:  { name:"Serene Plast", tag:"مواد المياه • الصحي • البناء" }
+      }
+    };
+
+    const I18N = {
+      ckb:{ dir:"rtl", themeDark:"تاریک", themeLight:"ڕووناک",
+        headlineTitle:"هەموو لینکەکانت لە یەک شوێن",
+        headlineSub:"بە کلیکێک دەگەیت بە پەیجەکان و شوێن و پەیوەندییەکان.",
+        contactTitle:"پەیوەندیی خێرا",
+        contactText:"بۆ نرخ و داواکاری، لە واتسئەپ پەیوەندی بکە. لوکەیشنیش بۆ دۆزینەوەی شوێن.",
+        copyPhone:"کۆپی ژمارە", openLocation:"کردنەوەی لوکەیشن",
+        hoursTitle:"کاتەکانی کارکردن",
+        hoursText:"شەممە تا پێنجشەممە: 9:00 – 8:00<br/>هەینی: 2:00 – 8:00",
+        copied:"ژمارە کۆپی کرا ✅", opening:"کردنەوە…",
+        footer:(y)=>`© ${y} — Serene Plast`
+      },
+      en:{ dir:"ltr", themeDark:"Dark", themeLight:"Light",
+        headlineTitle:"All your links in one place",
+        headlineSub:"One tap to reach your pages, contact, and location.",
+        contactTitle:"Quick contact",
+        contactText:"For prices and orders, message us on WhatsApp. Use Location to find the shop.",
+        copyPhone:"Copy phone", openLocation:"Open location",
+        hoursTitle:"Working hours",
+        hoursText:"Sat–Thu: 9:00 AM – 8:00 PM<br/>Fri: 2:00 PM – 8:00 PM",
+        copied:"Phone copied ✅", opening:"Opening…",
+        footer:(y)=>`© ${y} — Serene Plast`
+      },
+      ar:{ dir:"rtl", themeDark:"داكن", themeLight:"فاتح",
+        headlineTitle:"كل روابطك في مكان واحد",
+        headlineSub:"لمسة واحدة للوصول إلى الصفحات والتواصل والموقع.",
+        contactTitle:"تواصل سريع",
+        contactText:"للأسعار والطلبات راسلنا على واتساب. استخدم الموقع للوصول إلى المتجر.",
+        copyPhone:"نسخ الرقم", openLocation:"فتح الموقع",
+        hoursTitle:"ساعات العمل",
+        hoursText:"السبت–الخميس: 9:00 ص – 8:00 م<br/>الجمعة: 2:00 م – 8:00 م",
+        copied:"تم نسخ الرقم ✅", opening:"جارٍ الفتح…",
+        footer:(y)=>`© ${y} — Serene Plast`
+      }
+    };
+
+    // ============== Helpers ==============
+    const $ = (id)=> document.getElementById(id);
+    const toastEl = $("toast");
+    const gridEl = $("linksGrid");
+
+    const state = {
+      lang: localStorage.getItem("linkhub_lang") || "ckb",
+      theme: localStorage.getItem("linkhub_theme") || "dark"
+    };
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      setTimeout(()=> toastEl.classList.remove("show"), 1400);
+    }
+
+    function setImg(imgEl, src, errMsg){
+      imgEl.src = src;
+      imgEl.loading = "eager";
+      imgEl.decoding = "async";
+      imgEl.onerror = ()=> toast(errMsg + " → " + src);
+    }
+
+    function applyTheme(){
+      document.body.classList.toggle("light", state.theme === "light");
+      const t = I18N[state.lang];
+      $("themeLabel").textContent = (state.theme === "light" ? t.themeLight : t.themeDark);
+    }
+
+    function buildLinks(){
+      gridEl.textContent = "";
+      const frag = document.createDocumentFragment();
+
+      for(const item of PROFILE.links){
+        const a = document.createElement("a");
+        a.className = "linkBtn";
+        a.href = item.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+
+        const name = item.name[state.lang] || item.name.ckb;
+        const hint = item.hint || "";
+        const iconPath = PROFILE.images.icons[item.key] || "";
+
+        a.innerHTML = `
+          <span class="left">
+            <span class="icon" aria-hidden="true">
+              <img alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="meta">
+              <span class="name"></span>
+              <span class="hint"></span>
+            </span>
+          </span>
+          <span class="arrow" aria-hidden="true">➜</span>
+        `;
+
+        a.querySelector(".name").textContent = name;
+        a.querySelector(".hint").textContent = hint;
+
+        const img = a.querySelector("img");
+        img.src = iconPath;
+        img.onerror = ()=> toast("ئایکۆن نەدۆزرایەوە: " + iconPath);
+
+        frag.appendChild(a);
+      }
+      gridEl.appendChild(frag);
+    }
+
+    function applyLang(){
+      const t = I18N[state.lang];
+      document.documentElement.lang = state.lang;
+      document.documentElement.dir = t.dir;
+
+      $("langSelect").value = state.lang;
+
+      $("brandName").textContent = PROFILE.brand[state.lang].name;
+      $("brandTag").textContent  = PROFILE.brand[state.lang].tag;
+
+      $("coverTitle").textContent    = PROFILE.brand[state.lang].name;
+      $("coverSubtitle").textContent = PROFILE.brand[state.lang].tag;
+
+      $("headlineTitle").textContent = t.headlineTitle;
+      $("headlineSub").textContent   = t.headlineSub;
+
+      $("contactTitle").textContent  = t.contactTitle;
+      $("contactText").textContent   = t.contactText;
+
+      $("copyPhoneBtn").textContent    = t.copyPhone;
+      $("openLocationBtn").textContent = t.openLocation;
+
+      $("hoursTitle").textContent = t.hoursTitle;
+      $("hoursText").innerHTML    = t.hoursText;
+
+      $("footerText").innerHTML = t.footer(new Date().getFullYear());
+
+      applyTheme();
+      buildLinks();
+    }
+
+    function init(){
+      $("year").textContent = new Date().getFullYear();
+
+      // ✅ وێنەی لوگۆ/کاوەر بە config ـەکەی تۆ
+      setImg($("brandLogoImg"), PROFILE.images.logo,  "لوگۆ نەدۆزرایەوە");
+      setImg($("coverImg"),     PROFILE.images.cover, "وێنەی سەرەوە نەدۆزرایەوە");
+
+      $("langSelect").addEventListener("change", (e)=>{
+        state.lang = e.target.value;
+        localStorage.setItem("linkhub_lang", state.lang);
+        applyLang();
+      });
+
+      $("themeBtn").addEventListener("click", ()=>{
+        state.theme = (state.theme === "dark") ? "light" : "dark";
+        localStorage.setItem("linkhub_theme", state.theme);
+        applyTheme();
+      });
+
+      $("copyPhoneBtn").addEventListener("click", async ()=>{
+        try{
+          await navigator.clipboard.writeText(PROFILE.phone);
+          toast(I18N[state.lang].copied);
+        }catch{
+          toast("Clipboard blocked");
+        }
+      });
+
+      $("openLocationBtn").addEventListener("click", ()=>{
+        toast(I18N[state.lang].opening);
+        window.open(PROFILE.locationUrl, "_blank", "noopener,noreferrer");
+      });
+
+      applyLang();
+    }
+
+    // خێراتر/ئاسایش: DOM ready
+    if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  </script>
+</body>
+</html>
