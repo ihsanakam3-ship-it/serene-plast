@@ -5,17 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Serene Plast | موادی ئاو و ئاوەڕۆ و بیناسازی</title>
   <meta name="description" content="Serene Plast — Water • Sanitary • Construction Supplies" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <link rel="preload" as="image" href="7.jpg" />
+  <link rel="preload" as="image" href="9.jpg" />
 
   <style>
     :root{
       --bg0:#070b14; --bg1:#0c1426;
-      --glass: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.085);
       --glass2: rgba(255,255,255,.06);
       --stroke: rgba(255,255,255,.12);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.62);
       --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --shadow2: 0 10px 28px rgba(0,0,0,.35);
       --r: 22px;
+      --r2: 18px;
+
+      --ease: cubic-bezier(.2,.8,.2,1);
+      --ease2: cubic-bezier(.16, 1, .3, 1);
+      --speed: 220ms;
+
+      --focus: 0 0 0 3px rgba(96,165,250,.35);
+      --accentA: rgba(96,165,250,.22);
+      --accentB: rgba(45,212,191,.18);
+      --accentC: rgba(167,139,250,.18);
+
+      --fade: 220ms;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -24,12 +42,47 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Tahoma, Arial, "Noto Sans Arabic", "Noto Kufi Arabic", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(900px 620px at 85% 12%, rgba(96,165,250,.16), transparent 60%),
-        radial-gradient(900px 620px at 15% 18%, rgba(45,212,191,.14), transparent 60%),
-        radial-gradient(900px 620px at 55% 110%, rgba(167,139,250,.12), transparent 60%),
+        radial-gradient(900px 620px at 85% 12%, var(--accentA), transparent 60%),
+        radial-gradient(900px 620px at 15% 18%, var(--accentB), transparent 60%),
+        radial-gradient(900px 620px at 55% 110%, var(--accentC), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
+
+    /* Particle canvas */
+    #fxCanvas{
+      position:fixed; inset:0; z-index:-2;
+      width:100%; height:100%;
+      pointer-events:none;
+      opacity:.45;
+    }
+
+    /* animated blobs */
+    .blobs{
+      position:fixed; inset:0; pointer-events:none; z-index:-1;
+      filter: blur(40px);
+      opacity:.55;
+      transform: translateZ(0);
+    }
+    .blob{
+      position:absolute; width:420px; height:420px; border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(96,165,250,.35), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(45,212,191,.28), transparent 60%),
+                  radial-gradient(circle at 50% 50%, rgba(167,139,250,.22), transparent 60%);
+      mix-blend-mode: screen;
+      animation: floaty 16s var(--ease2) infinite alternate;
+      will-change: transform;
+    }
+    .blob.b1{ top:-120px; right:-120px; animation-duration: 18s; }
+    .blob.b2{ top:120px; left:-160px; animation-duration: 20s; animation-delay: -4s; }
+    .blob.b3{ bottom:-180px; left:40%; width:520px; height:520px; animation-duration: 22s; animation-delay: -6s; opacity:.5; }
+    @keyframes floaty{
+      from{ transform: translate3d(0,0,0) scale(1); }
+      to{ transform: translate3d(40px,-30px,0) scale(1.06); }
+    }
+
     .grid{
       position:fixed; inset:0;
       background-image:
@@ -37,17 +90,30 @@
         linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
       background-size: 46px 46px;
       mask-image: radial-gradient(closest-side at 55% 35%, rgba(0,0,0,.95), transparent 72%);
-      opacity:.22; pointer-events:none;
-      animation: drift 18s ease-in-out infinite alternate;
+      opacity:.20; pointer-events:none;
+      animation: drift 18s var(--ease2) infinite alternate;
       transform: translateZ(0);
+      will-change: transform;
     }
-    @keyframes drift{ from{transform:translate3d(0,0,0) scale(1)} to{transform:translate3d(14px,-10px,0) scale(1.02)} }
+    @keyframes drift{
+      from{transform:translate3d(0,0,0) scale(1)}
+      to{transform:translate3d(14px,-10px,0) scale(1.02)}
+    }
+
     .wrap{ max-width:980px; margin:0 auto; padding:34px 16px 24px; position:relative; }
     .topbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+
     .brand{ display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 360px; }
-    .brandLogo{ width:48px; height:48px; border-radius:16px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.07); overflow:hidden; flex:0 0 auto; display:grid; place-items:center; }
+    .brandLogo{
+      width:48px; height:48px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.07);
+      overflow:hidden; flex:0 0 auto; display:grid; place-items:center;
+      box-shadow: var(--shadow2);
+      transform: translateZ(0);
+    }
     .brandLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .brand h1{ margin:0; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brand h1{ margin:0; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:.2px; }
     .brand p{ margin:4px 0 0; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .controls{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
@@ -60,10 +126,14 @@
       font-size:12px;
       outline:none; cursor:pointer;
       display:inline-flex; align-items:center; gap:8px;
-      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+      transition: transform var(--speed) var(--ease), background var(--speed) var(--ease), border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease), opacity var(--fade) var(--ease);
       user-select:none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .pill:hover,.select:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18); }
+    .pill:hover,.select:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18); box-shadow: var(--shadow2); }
+    .pill:active,.select:active{ transform: translateY(0px) scale(.99); }
+    .pill:focus-visible,.select:focus-visible{ box-shadow: var(--focus); }
     .select option{ color:#111; }
 
     .layout{ display:grid; grid-template-columns: 1.15fr .85fr; gap:14px; }
@@ -75,14 +145,49 @@
       border: 1px solid rgba(255,255,255,.12);
       box-shadow: var(--shadow);
       overflow:hidden;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateZ(0);
+      transition: opacity var(--fade) var(--ease), transform var(--fade) var(--ease);
     }
 
+    /* Crossfade class for lang/theme switches */
+    .xfade-out{ opacity:0; transform: translate3d(0,6px,0); }
+    .xfade-in{ opacity:1; transform: translate3d(0,0,0); }
+
+    /* scroll reveal */
+    .reveal{
+      opacity:0;
+      transform: translate3d(0,10px,0);
+      transition: opacity 520ms var(--ease2), transform 520ms var(--ease2);
+    }
+    .reveal.in{ opacity:1; transform: translate3d(0,0,0); }
+
     .cover{ position:relative; height:190px; border-bottom:1px solid rgba(255,255,255,.10); overflow:hidden; }
-    .cover img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.02); transform:scale(1.02); }
-    .coverOverlay{ position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.12)); }
+    .cover img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      filter:saturate(1.06) contrast(1.02);
+      transform: scale(1.03);
+      transition: transform 900ms var(--ease2);
+      will-change: transform;
+    }
+    .card:hover .cover img{ transform: scale(1.06); }
+    .coverOverlay{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(800px 260px at 65% 25%, rgba(0,0,0,.12), transparent 55%),
+        linear-gradient(90deg, rgba(0,0,0,.60), rgba(0,0,0,.12));
+    }
     .coverText{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; padding:16px 18px; }
-    .coverText .big{ margin:0; font-size:20px; font-weight:850; text-shadow: 0 10px 30px rgba(0,0,0,.45); }
-    .coverText .small{ margin:0; font-size:12.5px; color: rgba(255,255,255,.80); text-shadow: 0 10px 30px rgba(0,0,0,.45); line-height:1.5; }
+    .coverText .big{
+      margin:0; font-size:20px; font-weight:900;
+      text-shadow: 0 10px 30px rgba(0,0,0,.45);
+      letter-spacing:.2px;
+    }
+    .coverText .small{
+      margin:0; font-size:12.5px; color: rgba(255,255,255,.82);
+      text-shadow: 0 10px 30px rgba(0,0,0,.45); line-height:1.5;
+    }
 
     .cardHeader{ padding:14px 18px 10px; }
     .title{ margin:0; font-size:18px; line-height:1.25; }
@@ -96,41 +201,72 @@
       width:100%;
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; padding:14px 14px;
-      border-radius:18px;
+      border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      background: linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.04));
       color: var(--text);
       text-decoration:none;
-      transition: transform .14s ease, border-color .2s ease, background .25s ease;
+      transition: transform var(--speed) var(--ease), border-color var(--speed) var(--ease), background var(--speed) var(--ease), box-shadow var(--speed) var(--ease), opacity var(--fade) var(--ease);
       overflow:hidden;
+      position:relative;
+      isolation:isolate;
+      will-change: transform;
     }
-    .linkBtn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); }
-    .left{ display:flex; align-items:center; gap:12px; min-width:0; }
+    .linkBtn::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(220px 140px at 20% 20%, rgba(96,165,250,.18), transparent 55%),
+                  radial-gradient(220px 140px at 80% 10%, rgba(45,212,191,.14), transparent 55%),
+                  radial-gradient(220px 140px at 80% 90%, rgba(167,139,250,.12), transparent 55%);
+      opacity:0;
+      transition: opacity 280ms var(--ease);
+      z-index:-1;
+    }
+    .linkBtn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.22);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      box-shadow: var(--shadow2);
+    }
+    .linkBtn:hover::before{ opacity:1; }
+    .linkBtn:active{ transform: translateY(-1px) scale(.995); }
+    .linkBtn:focus-visible{ box-shadow: var(--focus), var(--shadow2); }
 
+    .left{ display:flex; align-items:center; gap:12px; min-width:0; }
     .icon{
       width:44px; height:44px;
-      border-radius:14px;
+      border-radius:999px;
       background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.12);
       overflow:hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
       flex:0 0 auto;
-      display:block;
     }
-    .icon img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .icon img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.02);
+    }
 
     .meta{ min-width:0; display:flex; flex-direction:column; gap:3px; }
-    .meta .name{ font-size:14px; font-weight:850; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .meta .hint{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; direction:ltr; text-align:right; }
-    .arrow{ opacity:.85; flex:0 0 auto; transition: transform .2s ease, opacity .2s ease; }
+    .meta .name{ font-size:14px; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .meta .hint{
+      font-size:12px; color:var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      direction:ltr; text-align:start;
+    }
+    .arrow{ opacity:.85; flex:0 0 auto; transition: transform var(--speed) var(--ease), opacity var(--speed) var(--ease); }
     .linkBtn:hover .arrow{ transform: translateX(-3px); opacity:1; }
 
     .side{ display:flex; flex-direction:column; gap:12px; }
     .mini{ padding:16px; }
-    .mini h3{ margin:0 0 8px; font-size:14px; }
+    .mini h3{ margin:0 0 8px; font-size:14px; letter-spacing:.2px; }
     .mini p{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.75; }
 
     .actionsRow{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
     @media (max-width:420px){ .actionsRow{ grid-template-columns:1fr; } }
+
     .btn{
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.08);
@@ -140,10 +276,25 @@
       cursor:pointer;
       font-size: 12.5px;
       display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+      transition: transform var(--speed) var(--ease), background var(--speed) var(--ease), border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease), opacity var(--fade) var(--ease);
       user-select:none; width:100%;
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); box-shadow: var(--shadow2); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+    .btn:focus-visible{ box-shadow: var(--focus), var(--shadow2); }
+    .btn::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(240px 240px at var(--rx,50%) var(--ry,50%), rgba(255,255,255,.18), transparent 55%);
+      opacity:0;
+      transition: opacity 260ms var(--ease);
+      pointer-events:none;
+    }
+    .btn.rippling::after{ opacity:1; }
 
     .toast{
       position: fixed; left:16px; bottom:16px; z-index:10;
@@ -151,11 +302,12 @@
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(0,0,0,.45);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       box-shadow: var(--shadow);
       font-size:13px;
       opacity:0; transform: translateY(10px);
       pointer-events:none;
-      transition: opacity .2s ease, transform .2s ease;
+      transition: opacity 220ms var(--ease), transform 220ms var(--ease);
     }
     .toast.show{ opacity:1; transform: translateY(0); }
 
@@ -166,29 +318,45 @@
       --text: rgba(12,18,32,.92);
       --muted: rgba(12,18,32,.62);
       --stroke: rgba(12,18,32,.12);
+      --shadow: 0 18px 55px rgba(7,11,20,.12);
+      --shadow2: 0 10px 28px rgba(7,11,20,.10);
       background:
-        radial-gradient(900px 620px at 85% 12%, rgba(96,165,250,.18), transparent 60%),
-        radial-gradient(900px 620px at 15% 18%, rgba(45,212,191,.16), transparent 60%),
-        radial-gradient(900px 620px at 55% 110%, rgba(167,139,250,.14), transparent 60%),
+        radial-gradient(900px 620px at 85% 12%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(900px 620px at 15% 18%, rgba(45,212,191,.18), transparent 60%),
+        radial-gradient(900px 620px at 55% 110%, rgba(167,139,250,.16), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
     }
     body.light .toast{ background: rgba(255,255,255,.78); color: rgba(12,18,32,.92); }
+    body.light .blobs{ opacity:.45; mix-blend-mode: normal; }
+    body.light #fxCanvas{ opacity:.28; }
 
     @media (prefers-reduced-motion: reduce){
-      .grid{ animation:none !important; }
+      .grid,.blob{ animation:none !important; }
+      #fxCanvas{ display:none !important; }
       .pill:hover,.select:hover,.linkBtn:hover,.btn:hover{ transform:none !important; }
+      .reveal{ transition:none !important; opacity:1 !important; transform:none !important; }
+      .card:hover .cover img{ transform: scale(1.03) !important; }
+      .card{ transition:none !important; }
     }
   </style>
 </head>
 
 <body>
+  <canvas id="fxCanvas" aria-hidden="true"></canvas>
+
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
   <div class="grid" aria-hidden="true"></div>
 
   <main class="wrap">
-    <div class="topbar">
+    <div class="topbar reveal" data-reveal>
       <div class="brand">
         <div class="brandLogo" aria-hidden="true">
-          <img id="brandLogoImg" src="7.jpg" alt="Serene Plast Logo">
+          <img id="brandLogoImg" alt="Serene Plast Logo" referrerpolicy="no-referrer">
         </div>
         <div style="min-width:0">
           <h1 id="brandName">Serene Plast</h1>
@@ -197,22 +365,22 @@
       </div>
 
       <div class="controls">
-        <select class="select" id="langSelect" title="Language">
+        <select class="select" id="langSelect" title="Language" aria-label="Language selector">
           <option value="ckb">کوردی</option>
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
 
-        <button class="pill" id="themeBtn" type="button" title="Dark / Light">
+        <button class="pill" id="themeBtn" type="button" title="Dark / Light" aria-label="Theme toggle">
           <span id="themeLabel">تاریک</span>
         </button>
       </div>
     </div>
 
     <section class="layout">
-      <div class="card">
+      <div class="card reveal xfade-in" data-reveal id="mainCard">
         <div class="cover">
-          <img id="coverImg" src="7.jpg" alt="Serene Plast Cover">
+          <img id="coverImg" alt="Serene Plast Cover" referrerpolicy="no-referrer">
           <div class="coverOverlay" aria-hidden="true"></div>
           <div class="coverText">
             <p class="big" id="coverTitle">Serene Plast</p>
@@ -231,7 +399,7 @@
       </div>
 
       <aside class="side">
-        <div class="card mini">
+        <div class="card mini reveal xfade-in" data-reveal id="contactCard">
           <h3 id="contactTitle"></h3>
           <p id="contactText"></p>
 
@@ -241,45 +409,45 @@
           </div>
         </div>
 
-        <div class="card mini">
+        <div class="card mini reveal xfade-in" data-reveal id="hoursCard">
           <h3 id="hoursTitle"></h3>
           <p id="hoursText"></p>
         </div>
       </aside>
     </section>
 
-    <footer id="footerText">© <span id="year"></span> — Serene Plast</footer>
+    <footer id="footerText" class="reveal xfade-in" data-reveal>© <span id="year"></span> — Serene Plast</footer>
   </main>
 
-  <div class="toast" id="toast">Done</div>
+  <div class="toast" id="toast" role="status" aria-live="polite">Done</div>
 
   <script>
-    // ============== CONFIG (تەنها ئەمانە بگۆڕە) ==============
+    // ==================== CONFIG ====================
+    // ✅ ئەگەر لە فۆڵدەری تر host دەکەیت، BASE_PATH بگۆڕە (نمونە: "/serene/")
+    const BASE_PATH = "";
+
+    const ASSETS = {
+      logo:  "7.jpg",
+      cover: "9.jpg",
+      icons: {
+        facebook:  "1.jpg",
+        instagram: "2.webp",
+        tiktok:    "3.webp",
+        whatsapp:  "watsapp.png",
+        location:  "location.jpg",
+      }
+    };
+
     const PROFILE = {
       phone: "+9647501741718",
-
-      // ✅ یەکسان: ئەمە هەمان لوکەیشنە بێت کە لە لینکەکانیشە
       locationUrl: "https://maps.app.goo.gl/Q8JhHHMCEdmqiosa7",
 
-      // ✅ دڵنیابە ئەمانە بەڕاستی هەن لە شوێنی فایلەکە
-      images: {
-        logo:  "assets/logo.png",     // یان "7.jpg"
-        cover: "assets/cover.jpg",    // یان "7.jpg"
-        icons: {
-          facebook:  "1.jpg",
-          instagram: "2.webp",
-          tiktok:    "3.webp",
-          whatsapp:  "4.webp",
-          location:  "5.webp",
-        }
-      },
-
       links: [
-        { key:"facebook",  name:{ckb:"فەیسبوک", en:"Facebook", ar:"فيسبوك"},    url:"https://www.facebook.com/share/17umaNMTzt/", hint:"facebook.com/yourpage" },
+        { key:"facebook",  name:{ckb:"فەیسبوک", en:"Facebook", ar:"فيسبوك"},     url:"https://www.facebook.com/share/17umaNMTzt/", hint:"facebook.com/yourpage" },
         { key:"instagram", name:{ckb:"ئینستا",   en:"Instagram", ar:"إنستغرام"}, url:"https://www.instagram.com/serene.plast?igsh=MWQwaWx0aGJ0ajdiZA==", hint:"instagram.com/yourpage" },
         { key:"tiktok",    name:{ckb:"تیک تۆک",  en:"TikTok", ar:"تيك توك"},      url:"https://www.tiktok.com/@serene_plast?_r=1&_t=ZS-932fbhlmt5V", hint:"tiktok.com/@yourpage" },
         { key:"whatsapp",  name:{ckb:"واتسئەپ",  en:"WhatsApp", ar:"واتساب"},     url:"https://wa.me/9647501741718", hint:"wa.me/9647..." },
-        { key:"location",  name:{ckb:"لۆکەیشن",  en:"Location", ar:"الموقع"},     url:"https://maps.app.goo.gl/Q8JhHHMCEdmqiosa7", hint:"Google Maps" },
+        { key:"location",  name:{ckb:"لۆکەیشن",  en:"Location", ar:"الموقع"},     url:null, hint:"Google Maps" },
       ],
 
       brand: {
@@ -294,11 +462,13 @@
         headlineTitle:"هەموو لینکەکانت لە یەک شوێن",
         headlineSub:"بە کلیکێک دەگەیت بە پەیجەکان و شوێن و پەیوەندییەکان.",
         contactTitle:"پەیوەندیی خێرا",
-        contactText:"بۆ نرخ و داواکاری، لە واتسئەپ پەیوەندی بکە. لوکەیشنیش بۆ دۆزینەوەی شوێن.",
+        contactText:"بۆ نرخ و داواکاری، لە واتسئەپ پەیوەندی بکە.یان لۆکەیشن بەکاربهێنە بۆ دۆزینەوەی شوێن.",
         copyPhone:"کۆپی ژمارە", openLocation:"کردنەوەی لوکەیشن",
         hoursTitle:"کاتەکانی کارکردن",
-        hoursText:"شەممە تا پێنجشەممە: 9:00 – 8:00<br/>هەینی: 2:00 – 8:00",
+        hoursText:"شەممە تا پێنجشەممە: 8:00am – 6:00pm",
         copied:"ژمارە کۆپی کرا ✅", opening:"کردنەوە…",
+        iconMissing:"ئایکۆن نەدۆزرایەوە",
+        clipboardBlocked:"کۆپی کردن ڕێگە پێ نەدرا (Clipboard blocked)",
         footer:(y)=>`© ${y} — Serene Plast`
       },
       en:{ dir:"ltr", themeDark:"Dark", themeLight:"Light",
@@ -310,6 +480,8 @@
         hoursTitle:"Working hours",
         hoursText:"Sat–Thu: 9:00 AM – 8:00 PM<br/>Fri: 2:00 PM – 8:00 PM",
         copied:"Phone copied ✅", opening:"Opening…",
+        iconMissing:"Icon not found",
+        clipboardBlocked:"Clipboard blocked",
         footer:(y)=>`© ${y} — Serene Plast`
       },
       ar:{ dir:"rtl", themeDark:"داكن", themeLight:"فاتح",
@@ -321,11 +493,13 @@
         hoursTitle:"ساعات العمل",
         hoursText:"السبت–الخميس: 9:00 ص – 8:00 م<br/>الجمعة: 2:00 م – 8:00 م",
         copied:"تم نسخ الرقم ✅", opening:"جارٍ الفتح…",
+        iconMissing:"الأيقونة غير موجودة",
+        clipboardBlocked:"تم حظر النسخ",
         footer:(y)=>`© ${y} — Serene Plast`
       }
     };
 
-    // ============== Helpers ==============
+    // ==================== Helpers ====================
     const $ = (id)=> document.getElementById(id);
     const toastEl = $("toast");
     const gridEl = $("linksGrid");
@@ -335,17 +509,47 @@
       theme: localStorage.getItem("linkhub_theme") || "dark"
     };
 
+    function withBase(p){
+      if(!p) return "";
+      const base = (BASE_PATH || "").replace(/\/+$/,"");
+      const path = String(p).replace(/^\/+/,"");
+      return base ? `${base}/${path}` : path;
+    }
+
+    // stricter allowlist: only http/https + maps.app.goo.gl + wa.me + common socials
+    function safeUrl(url){
+      try{
+        const u = new URL(url);
+        if(u.protocol !== "https:" && u.protocol !== "http:") return "";
+        const h = u.hostname.toLowerCase();
+        const ok =
+          h.endsWith("facebook.com") ||
+          h.endsWith("instagram.com") ||
+          h.endsWith("tiktok.com") ||
+          h === "wa.me" ||
+          h === "maps.app.goo.gl" ||
+          h.endsWith("goo.gl");
+        return ok ? u.toString() : "";
+      }catch{
+        return "";
+      }
+    }
+
+    let toastTimer = null;
     function toast(msg){
+      if(toastTimer) clearTimeout(toastTimer);
       toastEl.textContent = msg;
       toastEl.classList.add("show");
-      setTimeout(()=> toastEl.classList.remove("show"), 1400);
+      toastTimer = setTimeout(()=> toastEl.classList.remove("show"), 1400);
     }
 
     function setImg(imgEl, src, errMsg){
-      imgEl.src = src;
+      const finalSrc = withBase(src);
+      imgEl.src = finalSrc;
       imgEl.loading = "eager";
       imgEl.decoding = "async";
-      imgEl.onerror = ()=> toast(errMsg + " → " + src);
+      imgEl.fetchPriority = "high";
+      imgEl.onerror = ()=> toast(`${errMsg}: ${finalSrc}`);
     }
 
     function applyTheme(){
@@ -354,25 +558,75 @@
       $("themeLabel").textContent = (state.theme === "light" ? t.themeLight : t.themeDark);
     }
 
+    function ripple(btn, ev){
+      const r = btn.getBoundingClientRect();
+      const x = ((ev?.clientX ?? (r.left + r.width/2)) - r.left);
+      const y = ((ev?.clientY ?? (r.top + r.height/2)) - r.top);
+      btn.style.setProperty("--rx", `${(x / r.width) * 100}%`);
+      btn.style.setProperty("--ry", `${(y / r.height) * 100}%`);
+      btn.classList.add("rippling");
+      setTimeout(()=> btn.classList.remove("rippling"), 260);
+    }
+
+    // ========= Crossfade helper (lang/theme) =========
+    function crossfade(){
+      const ids = ["mainCard","contactCard","hoursCard","footerText"];
+      for(const id of ids){
+        const el = $(id);
+        if(!el) continue;
+        el.classList.add("xfade-out");
+      }
+      setTimeout(()=>{
+        for(const id of ids){
+          const el = $(id);
+          if(!el) continue;
+          el.classList.remove("xfade-out");
+          el.classList.add("xfade-in");
+        }
+      }, 110);
+    }
+
+    // ========= Counter-up (headline only, visual) =========
+    function animateHeadline(){
+      // just a tiny micro animation: scale + fade
+      const h = $("headlineTitle");
+      if(!h) return;
+      h.animate(
+        [{opacity:.0, transform:"translateY(6px) scale(.99)"},{opacity:1, transform:"translateY(0) scale(1)"}],
+        {duration: 260, easing: "cubic-bezier(.16,1,.3,1)"}
+      );
+    }
+
     function buildLinks(){
       gridEl.textContent = "";
       const frag = document.createDocumentFragment();
 
       for(const item of PROFILE.links){
         const a = document.createElement("a");
-        a.className = "linkBtn";
-        a.href = item.url;
+        a.className = "linkBtn reveal";
+        a.setAttribute("data-reveal","");
+
+        const url = item.key === "location" ? PROFILE.locationUrl : item.url;
+        const safe = safeUrl(url);
+        a.href = safe || "#";
         a.target = "_blank";
         a.rel = "noopener noreferrer";
+        a.referrerPolicy = "no-referrer";
+        if(!safe){
+          a.addEventListener("click", (e)=>{
+            e.preventDefault();
+            toast("Invalid URL");
+          }, {passive:false});
+        }
 
         const name = item.name[state.lang] || item.name.ckb;
         const hint = item.hint || "";
-        const iconPath = PROFILE.images.icons[item.key] || "";
+        const iconPath = ASSETS.icons[item.key] || "";
 
         a.innerHTML = `
           <span class="left">
             <span class="icon" aria-hidden="true">
-              <img alt="" loading="lazy" decoding="async">
+              <img alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">
             </span>
             <span class="meta">
               <span class="name"></span>
@@ -386,12 +640,15 @@
         a.querySelector(".hint").textContent = hint;
 
         const img = a.querySelector("img");
-        img.src = iconPath;
-        img.onerror = ()=> toast("ئایکۆن نەدۆزرایەوە: " + iconPath);
+        const iconFinal = withBase(iconPath);
+        img.src = iconFinal;
+        img.onerror = ()=> toast(`${I18N[state.lang].iconMissing}: ${iconFinal}`);
 
         frag.appendChild(a);
       }
       gridEl.appendChild(frag);
+
+      setupReveal();
     }
 
     function applyLang(){
@@ -423,46 +680,180 @@
 
       applyTheme();
       buildLinks();
+      animateHeadline();
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch{
+        return false;
+      }
+    }
+
+    // ========= Scroll reveal =========
+    let revealObserver = null;
+    function setupReveal(){
+      const nodes = document.querySelectorAll("[data-reveal]");
+      nodes.forEach(n=> n.classList.add("reveal"));
+
+      if(revealObserver) revealObserver.disconnect();
+
+      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduced){
+        nodes.forEach(n=> n.classList.add("in"));
+        return;
+      }
+
+      revealObserver = new IntersectionObserver((entries)=>{
+        for(const e of entries){
+          if(e.isIntersecting){
+            e.target.classList.add("in");
+            revealObserver.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.14 });
+
+      nodes.forEach(n=> revealObserver.observe(n));
+    }
+
+    // ========= Particle FX (fast + light) =========
+    function initParticles(){
+      const c = $("fxCanvas");
+      const ctx = c.getContext("2d", { alpha:true });
+
+      let w=0,h=0, dpr=1;
+      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduced) { c.style.display="none"; return; }
+
+      function resize(){
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        w = c.width  = Math.floor(window.innerWidth * dpr);
+        h = c.height = Math.floor(window.innerHeight * dpr);
+        c.style.width = "100%";
+        c.style.height = "100%";
+      }
+      resize();
+      window.addEventListener("resize", resize, {passive:true});
+
+      const N = Math.round(Math.min(90, Math.max(40, (window.innerWidth*window.innerHeight)/22000)));
+      const pts = [];
+      for(let i=0;i<N;i++){
+        pts.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          vx: (Math.random()-.5)*0.22*dpr,
+          vy: (Math.random()-.5)*0.22*dpr,
+          r: 1.2*dpr + Math.random()*1.8*dpr,
+          a: 0.25 + Math.random()*0.35
+        });
+      }
+
+      let last = performance.now();
+      function tick(now){
+        const dt = Math.min(32, now-last); last = now;
+        ctx.clearRect(0,0,w,h);
+
+        // points
+        for(const p of pts){
+          p.x += p.vx*dt;
+          p.y += p.vy*dt;
+          if(p.x<0) p.x=w; if(p.x>w) p.x=0;
+          if(p.y<0) p.y=h; if(p.y>h) p.y=0;
+
+          ctx.beginPath();
+          ctx.globalAlpha = p.a;
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle = "rgba(255,255,255,1)";
+          ctx.fill();
+        }
+
+        // connections (light)
+        ctx.globalAlpha = 0.10;
+        for(let i=0;i<pts.length;i++){
+          for(let j=i+1;j<pts.length;j++){
+            const a = pts[i], b = pts[j];
+            const dx=a.x-b.x, dy=a.y-b.y;
+            const dist = Math.hypot(dx,dy);
+            const max = 140*dpr;
+            if(dist < max){
+              ctx.globalAlpha = (1 - dist/max) * 0.12;
+              ctx.beginPath();
+              ctx.moveTo(a.x,a.y);
+              ctx.lineTo(b.x,b.y);
+              ctx.strokeStyle = "rgba(255,255,255,1)";
+              ctx.lineWidth = 1*dpr;
+              ctx.stroke();
+            }
+          }
+        }
+
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
     }
 
     function init(){
       $("year").textContent = new Date().getFullYear();
 
-      // ✅ وێنەی لوگۆ/کاوەر بە config ـەکەی تۆ
-      setImg($("brandLogoImg"), PROFILE.images.logo,  "لوگۆ نەدۆزرایەوە");
-      setImg($("coverImg"),     PROFILE.images.cover, "وێنەی سەرەوە نەدۆزرایەوە");
+      setImg($("brandLogoImg"), ASSETS.logo,  "لوگۆ نەدۆزرایەوە");
+      setImg($("coverImg"),     ASSETS.cover, "وێنەی سەرەوە نەدۆزرایەوە");
+
+      setupReveal();
+      initParticles();
 
       $("langSelect").addEventListener("change", (e)=>{
         state.lang = e.target.value;
         localStorage.setItem("linkhub_lang", state.lang);
+        crossfade();
         applyLang();
-      });
+      }, {passive:true});
 
-      $("themeBtn").addEventListener("click", ()=>{
+      $("themeBtn").addEventListener("click", (e)=>{
         state.theme = (state.theme === "dark") ? "light" : "dark";
         localStorage.setItem("linkhub_theme", state.theme);
+        crossfade();
         applyTheme();
+        ripple($("themeBtn"), e);
       });
 
-      $("copyPhoneBtn").addEventListener("click", async ()=>{
-        try{
-          await navigator.clipboard.writeText(PROFILE.phone);
+      $("copyPhoneBtn").addEventListener("pointerdown", (e)=> ripple($("copyPhoneBtn"), e), {passive:true});
+      $("openLocationBtn").addEventListener("pointerdown", (e)=> ripple($("openLocationBtn"), e), {passive:true});
+
+      $("copyPhoneBtn").addEventListener("click", async (e)=>{
+        ripple($("copyPhoneBtn"), e);
+        const ok = await copyText(PROFILE.phone);
+        if(ok){
           toast(I18N[state.lang].copied);
-        }catch{
-          toast("Clipboard blocked");
+        }else{
+          window.prompt("Copy:", PROFILE.phone);
+          toast(I18N[state.lang].clipboardBlocked);
         }
       });
 
-      $("openLocationBtn").addEventListener("click", ()=>{
+      $("openLocationBtn").addEventListener("click", (e)=>{
+        ripple($("openLocationBtn"), e);
         toast(I18N[state.lang].opening);
-        window.open(PROFILE.locationUrl, "_blank", "noopener,noreferrer");
+        const safe = safeUrl(PROFILE.locationUrl);
+        if(safe) window.open(safe, "_blank", "noopener,noreferrer");
       });
+
+      // prefetch external pages on hover
+      gridEl.addEventListener("mouseover", (e)=>{
+        const a = e.target.closest("a.linkBtn");
+        if(!a || !a.href || a.href === "#") return;
+        const l = document.createElement("link");
+        l.rel = "prefetch";
+        l.href = a.href;
+        document.head.appendChild(l);
+        setTimeout(()=> l.remove(), 8000);
+      }, {passive:true});
 
       applyLang();
     }
 
-    // خێراتر/ئاسایش: DOM ready
-    if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once:true});
     else init();
   </script>
 </body>
